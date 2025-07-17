@@ -1,0 +1,23 @@
+{
+    "name": "pads-web-laravel",
+    "version": "1.0.0",
+    "description": "PADS Management System - Laravel Backend",
+    "scripts": {
+        "dev": "php artisan serve --host=0.0.0.0 --port=8000",
+        "build": "php artisan config:cache && php artisan route:cache && php artisan view:cache",
+        "migrate": "php artisan migrate",
+        "seed": "php artisan db:seed",
+        "fresh": "php artisan migrate:fresh --seed"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.0",
+        "jquery": "^3.7.0",
+        "datatables.net": "^1.13.0",
+        "datatables.net-bs5": "^1.13.0",
+        "chart.js": "^4.4.0"
+    },
+    "devDependencies": {
+        "vite": "^5.0.0",
+        "laravel-vite-plugin": "^1.0.0"
+    }
+}
