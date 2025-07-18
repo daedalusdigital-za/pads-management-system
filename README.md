@@ -98,13 +98,23 @@ A comprehensive **Pad Distribution System** built with Laravel, featuring modern
    php artisan key:generate
    ```
 
-4. **Database setup**
+4. **Google Maps API Key Setup**
+   - Go to the [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the Maps JavaScript API
+   - Create an API key and restrict it to your domain
+   - Add the API key to your `.env` file:
+   ```
+   GOOGLE_MAPS_API_KEY=your_actual_api_key_here
+   ```
+
+5. **Database setup**
    ```bash
    touch database/database.sqlite
    php artisan migrate
    ```
 
-5. **Start the development server**
+6. **Start the development server**
    ```bash
    php artisan serve
    ```

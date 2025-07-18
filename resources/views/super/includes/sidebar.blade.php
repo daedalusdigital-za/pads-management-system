@@ -1,71 +1,209 @@
-<!-- Sidebar Navigation -->
-<nav class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <div class="logo-container">
-            <img src="/assets/logos/logo.png" alt="PADS Logo" style="max-height: 40px; max-width: 100%; margin-bottom: 10px;" onerror="this.style.display='none'">
-        </div>
-        <h4>PADS Admin</h4>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $page ?? 'PADS Management System' }}</title>
     
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/dashboard') ? 'active' : '' }}" 
-               href="/super/dashboard">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #036666;
+            --secondary-color: #024d4d;
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/schools*') ? 'active' : '' }}" 
-               href="/super/schools">
-                <i class="fas fa-school"></i>
-                <span>Schools</span>
-            </a>
-        </li>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/deliveries*') ? 'active' : '' }}" 
-               href="/super/deliveries">
-                <i class="fas fa-shipping-fast"></i>
-                <span>Deliveries</span>
-            </a>
-        </li>
+        .header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/documents*') ? 'active' : '' }}" 
-               href="/super/documents">
-                <i class="fas fa-file-alt"></i>
-                <span>Documents</span>
-            </a>
-        </li>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #1f8df4 0%, #043249 100%);
+            color: white;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/calendar*') ? 'active' : '' }}" 
-               href="/super/calendar">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Calendar</span>
-            </a>
-        </li>
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            background: #f8f9fa;
+            padding: 20px;
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/reports*') ? 'active' : '' }}" 
-               href="/super/reports">
-                <i class="fas fa-chart-bar"></i>
-                <span>Reports</span>
-            </a>
-        </li>
+        .content-area {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0;
+            margin: 0;
+        }
         
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('super/settings*') ? 'active' : '' }}" 
-               href="/super/settings">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+        .sidebar .nav-link {
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .sidebar .nav-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(4, 50, 73, 0.3);
+        }
+        
+        .sidebar-header h4 {
+            margin: 0;
+            color: white;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .user-menu {
+            position: relative;
+        }
+        
+        .user-menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .user-menu-toggle:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .user-menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 150px;
+            display: none;
+        }
+        
+        .user-menu-dropdown.show {
+            display: block;
+        }
+        
+        .user-menu-item {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #374151;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background-color 0.2s;
+        }
+        
+        .user-menu-item:hover {
+            background-color: #f8fafc;
+            color: #374151;
+        }
+        
+        .user-menu-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row align-items-center py-2">
+                <div class="col">
+                    <button class="btn btn-link d-md-none" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="fw-bold text-primary">PADS Management System</span>
+                </div>
+                <div class="col-auto">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/super/settings">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<!-- Main Content Area -->
-<div class="main-content">
-</style>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+    </script>

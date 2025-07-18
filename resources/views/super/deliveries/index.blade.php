@@ -165,7 +165,7 @@
 </head>
 <body>
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dM-UyPrn7YGTcw&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google.maps_api_key') }}&libraries=places"></script>
     <div class="wrapper">
         <!-- Sidebar -->
         <nav class="sidebar">
