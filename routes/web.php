@@ -72,9 +72,10 @@ Route::prefix('super')->group(function () {
             ->with('success', 'Reports imported successfully!');
     })->name('reports.process.import');
     
-    Route::get('/settings', function () {
-        return view('super.settings.index');
-    })->name('settings.index');
+    Route::get('/reports/analytics', function () {
+        // Analytics page with sample data
+        return view('super.reports.analytics');
+    })->name('reports.analytics');
     
     Route::get('/calendar', function () {
         return view('super.calendar.index');
@@ -122,8 +123,33 @@ Route::get('/dynamic-css', function () {
         ->header('Content-Type', 'text/css');
 });
 
+// Assets route
+Route::get('/assets/{path}', function ($path) {
+    $filePath = base_path('assets/' . $path);
+    if (file_exists($filePath)) {
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $mimeTypes = [
+            'css' => 'text/css',
+            'js' => 'text/javascript',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'ico' => 'image/x-icon'
+        ];
+        
+        $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
+        
+        return response(file_get_contents($filePath), 200)
+            ->header('Content-Type', $mimeType);
+    }
+    
+    return abort(404);
+})->where('path', '.*');
+
 // Settings routes
-Route::get('/super/settings', [SettingsController::class, 'index'])->name('super.settings.index');
+Route::get('/super/settings', [SettingsController::class, 'index'])->name('settings.index');
 Route::post('/super/settings/general', [SettingsController::class, 'updateGeneral'])->name('super.settings.general');
 Route::post('/super/settings/import', [SettingsController::class, 'importData'])->name('super.settings.import');
 Route::post('/super/settings/export', [SettingsController::class, 'exportData'])->name('super.settings.export');

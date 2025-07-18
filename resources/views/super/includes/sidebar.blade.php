@@ -1,6 +1,9 @@
 <!-- Sidebar Navigation -->
 <nav class="sidebar" id="sidebar">
     <div class="sidebar-header">
+        <div class="logo-container">
+            <img src="/assets/logos/logo.png" alt="PADS Logo" style="max-height: 40px; max-width: 100%; margin-bottom: 10px;" onerror="this.style.display='none'">
+        </div>
         <h4>PADS Admin</h4>
     </div>
     
